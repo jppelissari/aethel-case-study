@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Aethel — Case Study</title>
+<style>
+:root {
+  --bg: #f5f3ee;
+  --paper: #fbfaf7;
+  --ink: #171614;
+  --muted: #6f6a63;
+  --line: #d9d2c7;
+  --line-strong: #c9c0b3;
+  --gold: #b08d49;
+  --gold-soft: #efe7d7;
+  --gold-deep: #8a6a2a;
+  --green: #174b48;
+  --green-soft: #dce9e7;
+  --red: #c74632;
+  --red-soft: #f7e7e2;
+  --charcoal: #232220;
+  --charcoal-soft: #2c2a27;
+  --shadow: 0 18px 60px rgba(21,18,12,0.08);
+  --radius-screen: 47px;
+  --radius-card: 28px;
+  --radius-sm: 14px;
+  --max: 1180px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+.page {
+  width: min(100%, var(--max));
+  margin: 0 auto;
+  padding: 28px 28px 120px;
+}
+
+/* ── Typography ── */
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+h2, h3, h4 {
+  font-family: "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  margin: 0;
+  color: var(--ink);
+}
+h2 { font-size: clamp(34px,5vw,54px); margin-bottom: 8px; }
+h3 { font-size: clamp(26px,3.5vw,36px); margin-bottom: 10px; }
+h4 { font-size: 22px; margin-bottom: 10px; }
+
+.display {
+  font-family: "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  font-size: clamp(48px,8vw,98px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin: 10px 0 18px;
+  font-weight: 500;
+}
+.section-copy { font-size: 18px; color: #292622; max-width: 840px; }
+.section-copy p { margin: 0 0 18px; }
+.section-copy p:last-child { margin-bottom: 0; }
+
+.pull-quote {
+  margin: 40px 0 0;
+  padding: 18px 22px;
+  border-left: 3px solid var(--gold);
+  color: #3e3831;
+  background: rgba(176,141,73,0.06);
+  border-radius: 0;
+  font-size: 18px;
+  font-style: italic;
+}
+
+/* ── Hero ── */
+.hero { padding: 44px 0 72px; border-bottom: 1px solid var(--line); }
+.hero-grid { display: grid; grid-template-columns: 1.3fr 0.8fr; gap: 36px; align-items: end; }
+.hero-lead { font-size: clamp(18px,2.4vw,24px); line-height: 1.45; max-width: 820px; color: #2a2723; margin: 0 0 22px; }
+.hero-quote { font-size: 18px; color: var(--muted); max-width: 760px; margin: 0; font-style: italic; }
+
+.meta-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+.meta-list { display: grid; gap: 14px; margin: 0; }
+.meta-item { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.meta-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.meta-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.meta-value { font-size: 15px; color: var(--ink); }
+
+/* ── Sections ── */
+.section { padding: 80px 0; border-bottom: 1px solid var(--line); }
+.section:last-of-type { border-bottom: none; }
+.section-header { display: grid; grid-template-columns: 220px 1fr; gap: 24px; margin-bottom: 40px; align-items: start; }
+.section-number { font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); padding-top: 6px; }
+
+/* ── Cards ── */
+.card, .table-card, .diagram-card, .screen-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+.table-card, .diagram-card { padding: 22px; }
+.screen-card { padding: 18px; border-radius: 20px; }
+.stack { display: grid; gap: 28px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.mini-note { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+
+/* ── Tables ── */
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { padding: 14px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+th { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+
+/* ── Journey flow ── */
+.arrow-flow { display: grid; gap: 20px; }
+.flow-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.flow-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.flow-chip {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255,255,255,0.65);
+  font-size: 15px;
+  white-space: nowrap;
+}
+.flow-chip.silence {
+  border-color: #d4b982;
+  background: var(--gold-soft);
+  color: #6c5424;
+  font-weight: 600;
+  padding: 10px 22px;
+}
+.flow-chip.question {
+  border-color: var(--line);
+  background: rgba(255,255,255,0.3);
+  color: var(--muted);
+  font-style: italic;
+  font-size: 13px;
+}
+.flow-chip.return {
+  border-color: rgba(199,70,50,0.3);
+  background: rgba(199,70,50,0.05);
+  color: var(--red);
+  font-size: 14px;
+}
+.flow-arrow { color: var(--muted); font-size: 18px; font-weight: 700; }
+.flow-arrow.red { color: rgba(199,70,50,0.5); }
+.flow-return-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 28px;
+  margin-top: -4px;
+}
+.flow-return-line {
+  height: 1px;
+  width: 48px;
+  background: rgba(199,70,50,0.35);
+  flex-shrink: 0;
+}
+.flow-return-note { font-size: 12px; color: var(--red); font-style: italic; opacity: 0.85; }
+
+/* ── Risk cards — 2x2 grid ── */
+.risk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.risk-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: rgba(255,255,255,0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.risk-card.risk-rejection {
+  border-color: rgba(176,141,73,0.35);
+  background: rgba(176,141,73,0.04);
+}
+.risk-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.risk-card.risk-rejection .risk-tag { color: var(--gold-deep); }
+.risk-card p { margin: 0 0 14px; font-size: 15px; line-height: 1.6; color: #36312c; }
+.risk-card p:last-of-type { margin-bottom: 14px; }
+.risk-logic { display: grid; gap: 5px; }
+.risk-logic div { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.risk-logic strong { color: var(--ink); }
+.risk-link { color: var(--gold); font-weight: 700; font-size: 13px; margin-top: 6px; display: block; }
+
+/* ── Before/after ── */
+.before-after { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch; }
+.before-col, .after-col { border-radius: var(--radius-card); padding: 32px; min-height: 260px; }
+.before-col { background: #2a2723; color: #f8f6f2; }
+.after-col { background: var(--green); color: #f8f6f2; }
+.compare-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700; opacity: 0.75; margin-bottom: 16px; }
+.compare-steps { display: grid; gap: 10px; font-size: 17px; line-height: 1.4; }
+.compare-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 28px; font-weight: 700; }
+
+/* ── Lobby moment ── */
+.lobby-block {
+  padding: 36px 40px;
+  background: var(--charcoal);
+  border-radius: var(--radius-card);
+  margin: 28px 0;
+}
+.lobby-block p { font-size: 17px; line-height: 1.8; color: #e8e4dc; margin: 0 0 16px; }
+.lobby-block p:last-child { margin-bottom: 0; }
+.lobby-block strong { color: #f8f6f2; font-weight: 500; }
+
+/* ── Impact strip ── */
+.impact-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 24px; }
+.impact-pill { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: rgba(255,255,255,0.55); }
+.impact-pill .delta { font-weight: 800; font-size: 20px; margin-bottom: 6px; }
+.impact-pill .delta.down { color: var(--red); }
+.impact-pill .delta.up { color: var(--green); }
+.impact-pill .delta-label { font-size: 14px; color: #36312c; line-height: 1.4; }
+
+/* ── Decision cell ── */
+.decision-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.decision-cell {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  background: rgba(255,255,255,0.52);
+  min-height: 120px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #36312c;
+}
+.decision-cell strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+/* ── Phase grid — horizontal scroll on mobile ── */
+.phase-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.phase-grid {
+  display: grid;
+  grid-template-columns: 160px repeat(5,1fr);
+  gap: 1px;
+  background: var(--line);
+  min-width: 860px;
+}
+.phase-grid > div { background: var(--paper); padding: 16px; font-size: 14px; line-height: 1.5; color: #36312c; }
+.phase-grid .head { background: #f0ece4; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); font-weight: 700; }
+.phase-grid .rowhead { font-weight: 700; color: #312d29; background: #f7f5f0; }
+.phase-grid .exception-cell { background: rgba(176,141,73,0.04); }
+.phase-grid .head.exception-head { background: rgba(176,141,73,0.09); color: var(--gold-deep); }
+
+/* ── Rejection logic ── */
+.rejection-contrast {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 28px;
+}
+.rejection-col {
+  border-radius: var(--radius-card);
+  padding: 32px;
+}
+.rejection-col.typical {
+  background: #2a2723;
+  color: #e8e4dc;
+}
+.rejection-col.aethel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.rejection-col-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 18px;
+}
+.rejection-col.aethel .rejection-col-label { color: var(--muted); }
+.rejection-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.rejection-col.aethel .rejection-step { border-top-color: var(--line); color: #36312c; }
+.rejection-step:first-of-type { border-top: none; padding-top: 0; }
+.step-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.4;
+  flex-shrink: 0;
+  width: 20px;
+  padding-top: 2px;
+}
+.rejection-col.aethel .step-num { opacity: 0.4; color: var(--ink); }
+
+/* ── Design decision callout ── */
+.decision-callout {
+  margin-top: 22px;
+  padding: 20px 24px;
+  background: rgba(176,141,73,0.06);
+  border: 1px solid rgba(176,141,73,0.2);
+  border-radius: var(--radius-sm);
+}
+.decision-callout-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 8px;
+}
+.decision-callout p { margin: 0; font-size: 15px; line-height: 1.65; color: #3e3831; }
+
+/* ── Screen section ── */
+.screen-section-title {
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.screen-section-quote {
+  margin: 48px 0 28px;
+  font-size: 17px;
+  font-style: italic;
+  color: #4a453e;
+  padding-left: 18px;
+  border-left: 2px solid var(--line-strong);
+}
+.screen-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; align-items: stretch; }
+.screen-grid.two-up { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 840px; align-items: stretch; }
+.screen-grid.four-flow { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; align-items: stretch; }
+.screen-card { padding: 18px; display: flex; flex-direction: column; gap: 0; overflow: visible; }
+.screen-card.sequence-card { padding: 20px; display: flex; flex-direction: column; height: 100%; }
+.screen-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 14px; flex-shrink: 0; }
+.screen-id { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; color: var(--gold); }
+.screen-name { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.2; max-width: 200px; }
+.screen-step { margin-bottom: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+.screen-slot {
+  aspect-ratio: 393/852;
+  border: 1px solid rgba(217,210,199,0.7);
+  border-radius: 47px;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+}
+.screen-slot::before {
+  content: "UI SCREEN SLOT";
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700;
+}
+.screen-slot::after {
+  content: "390 × 844";
+  position: absolute; inset: auto 0 24px 0; text-align: center; font-size: 13px; color: var(--muted);
+}
+.screen-inner-outline {
+  position: absolute; inset: 32px 20px 52px;
+  border: 1px dashed rgba(111,106,99,0.45); border-radius: 28px;
+}
+.screen-slot.has-image { padding: 0; overflow: hidden; }
+.screen-slot.has-image::before, .screen-slot.has-image::after { display: none; }
+.screen-shot { width: 100%; height: 100%; display: block; object-fit: cover; object-position: top center; background: transparent; }
+.screen-card p { margin: 0; font-size: 14px; color: #36312c; line-height: 1.6; flex: 1; }
+.screen-card .logic { margin-top: 10px; display: grid; gap: 6px; flex-shrink: 0; }
+.logic div { font-size: 13px; color: var(--muted); }
+.logic strong { color: var(--ink); }
+
+/* ── Timeline proof ── */
+.timeline-proof { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch; }
+.proof-box { border-radius: var(--radius-card); padding: 28px; min-height: 280px; }
+.proof-box.before { background: #24211d; color: #fffaf3; }
+.proof-box.after { background: var(--paper); border: 1px solid var(--line); }
+.proof-stack { display: grid; gap: 10px; margin-top: 16px; }
+.proof-item { border-radius: var(--radius-sm); padding: 11px 14px; font-size: 15px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); line-height: 1.4; }
+.proof-box.after .proof-item { background: rgba(23,75,72,0.05); border-color: rgba(23,75,72,0.12); color: #2a2723; }
+.proof-highlight { color: var(--gold); font-weight: 700; }
+
+/* ── Footer ── */
+.footer { padding-top: 46px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+.footer-quote { font-size: 22px; font-family: "Iowan Old Style",Georgia,serif; line-height: 1.25; max-width: 560px; color: #2a2723; }
+.footer-meta { text-align: right; color: var(--muted); font-size: 14px; }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .hero-grid, .section-header, .two-col, .before-after, .timeline-proof,
+  .footer, .decision-grid, .screen-grid, .screen-grid.two-up,
+  .screen-grid.four-flow, .impact-strip, .risk-grid, .rejection-contrast { grid-template-columns: 1fr; }
+  .section-number { padding-top: 0; }
+  .compare-arrow { transform: rotate(90deg); min-height: 40px; }
+  .screen-grid.four-flow { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .page { padding: 20px 16px 80px; }
+  .hero { padding-top: 26px; }
+  .table-card, .diagram-card, .screen-card, .meta-card { padding: 16px; }
+  .display { font-size: 54px; }
+  .hero-lead, .section-copy { font-size: 17px; }
+  .screen-slot { border-radius: 47px; }
+  .lobby-block { padding: 24px; }
+  .screen-grid.four-flow { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+<div class="hero-grid">
+<div>
+  <div class="eyebrow">Customer Experience Systems · Case Study</div>
+  <h1 class="display">The Aethel</h1>
+  <p class="hero-lead">For eight years, I was on the other side of this system — the one fielding the calls that should never have happened. This is what I built when I decided to fix it.</p>
+  <p style="font-size:16px; line-height:1.65; color:var(--muted); max-width:760px; margin:0 0 0;">The pattern this system addresses — customers losing visibility mid-process and filling the gap with follow-ups — exists in every product-led environment. This is what I built to fix it in a high-volume operations context. The logic transfers.</p>
+  <p class="hero-quote">"The experience doesn't break when service fails. It breaks when the guest stops understanding what's happening."</p>
+</div>
+<aside class="meta-card">
+  <div class="meta-list">
+    <div class="meta-item">
+      <div class="meta-label">Background</div>
+      <div class="meta-value">8 Years Hospitality Operations · NYC · London · São Paulo</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Format</div>
+      <div class="meta-value">Concept · Solo Project · Mobile PWA</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Focus</div>
+      <div class="meta-value">Operational Strategy · Service Design · Systems Thinking · UX / UI</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Discovery</div>
+      <div class="meta-value">13,644 support tickets analyzed · One property · One issue type</div>
+    </div>
+  </div>
+</aside>
+</div>
+</section>
+
+<!-- ═══════ 01 OPERATIONAL CONTEXT (merged §01+§02) ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">01 · Operational Context</div>
+  <div>
+    <h2>This problem has a paper trail.</h2>
+    <div class="section-copy">
+      <p>Eight years. Four properties. Three countries. The same breakdown, every time.</p>
+      <p>Not every request fails. Most are fulfilled — towels delivered, repairs completed, items retrieved. The operation, technically, works.</p>
+      <p>What kept failing was the moment between dispatch and arrival. The guest submits a request. The front desk logs it. The system carries it forward. And from that point on — the guest is alone with uncertainty.</p>
+      <p>They call back. We answer. We say "it's on its way." We don't actually know if it is. We check with housekeeping. Housekeeping checks with the runner. Someone says five minutes. It's been twenty.</p>
+      <p>This is not a failure of people. It's a failure of visibility — baked into every property management system I've worked with. And it wasn't an execution problem. The requests, in most cases, were being fulfilled. The breakdown was informational — and that distinction changes everything about what the solution needs to be.</p>
+      <p>I didn't build this because it seemed interesting. I built it after pulling a support ticket log and finding 13,644 entries filtered to a single issue type — repeated contacts, same rooms, consecutive days. Each one a guest who called back because the system had the information and never surfaced it. That's not a service problem. That's a recoverable operational cost that compounds daily.</p>
+    </div>
+  </div>
+</div>
+<div class="pull-quote">"In hospitality, the experience breaks before the service fails — it breaks the moment the guest no longer understands what is happening."</div>
+</section>
+
+<!-- ═══════ 02 WHY THIS MATTERS (was §05, moved up) ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">02 · Why This Matters</div>
+  <div>
+    <h2>This is not a UX problem.</h2>
+  </div>
+</div>
+<div class="lobby-block">
+  <p>There's a moment I watched happen dozens of times. A guest walks up to the front desk — not to check in, not to check out. They walk up because they submitted a request forty minutes ago and heard nothing.</p>
+  <p>They're not angry yet. <strong>They're uncertain.</strong> And uncertainty, at this level of hospitality, reads as neglect.</p>
+  <p>The conversation that follows takes three minutes. It involves one front desk agent, one radio call to housekeeping, a wait, a vague answer, and a promise. The guest walks away — maybe reassured, maybe not. <strong>Three guests behind them in line watched the whole thing.</strong></p>
+  <p>That interaction did not need to happen. The request was being fulfilled. The team member was on the way. The only thing missing was a number on a screen.</p>
+  <p>This is why visibility is not a UX problem. It's a service integrity problem. Every unnecessary escalation is a public moment — witnessed by other guests, absorbed into their perception of the property, reflected in the review they write six days later.</p>
+</div>
+<div class="pull-quote">"The goal was never to speed up the service. It was to make the wait feel like service."</div>
+<div class="mini-note" style="margin-top:16px; font-size:14px; color:var(--muted); line-height:1.7;">In hospitality, the damage lands in a public review. In a product environment, it surfaces as a CSAT score, an NPS detractor, or a renewal conversation that starts from a position of eroded trust.</div>
+</section>
+
+<!-- §03 Journey Breakdown removed — argument covered in §01 -->
+
+<!-- ═══════ 04 STRESS ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">03 · Stress Scenarios</div>
+  <div>
+    <h2>Where the System Breaks Under Pressure</h2>
+    <div class="section-copy">
+      <p>Onboarding and implementation are not linear. Neither is a hotel request. These are the four moments where the experience breaks — not because execution failed, but because the system stopped communicating. Each one maps directly to failure patterns in any high-touch client environment. In an onboarding context, these are the moments where time-to-value extends not because the product is slow, but because the customer lost the thread.</p>
+    </div>
+  </div>
+</div>
+<div class="risk-grid">
+  <div class="risk-card">
+    <div class="risk-tag">Risk · Silent Failure</div>
+    <h4>High Demand</h4>
+    <p>When capacity is high, requests lose clarity. The guest cannot distinguish between queued, delayed, or lost. Silence, at this level, is interpreted as failure — regardless of what is actually happening.</p>
+    <div class="risk-logic">
+      <div><strong>Decision:</strong> Expose constraint clearly — name it, estimate it, commit to updating it</div>
+      <div><strong>Outcome:</strong> Honest delay outperforms false reassurance every time</div>
+      <span class="risk-link">→ Screen 07 — High Demand</span>
+    </div>
+  </div>
+  <div class="risk-card">
+    <div class="risk-tag">Risk · False Promise</div>
+    <h4>In-Progress Cancellation</h4>
+    <p>When a request is already in motion, cancellation becomes ambiguous. A binary yes/no response creates a false sense of control. The system must communicate operational constraint — not certainty.</p>
+    <div class="risk-logic">
+      <div><strong>Decision:</strong> Explain the coordination required before confirming any outcome</div>
+      <div><strong>Outcome:</strong> Trust maintained without fabricated certainty</div>
+      <span class="risk-link">→ Screens 08 + 10-A — Cancel Modal &amp; Pending</span>
+    </div>
+  </div>
+  <div class="risk-card">
+    <div class="risk-tag">Risk · Closed-but-Open</div>
+    <h4>Unresolved Resolution</h4>
+    <p>A request can be marked complete while the issue still exists. Without a resolution check, the failure disappears from the system — and returns as a public escalation that is harder to contain.</p>
+    <div class="risk-logic">
+      <div><strong>Decision:</strong> Require guest confirmation and surface a reopen path</div>
+      <div><strong>Outcome:</strong> Catch hidden failures before they reach the lobby</div>
+      <span class="risk-link">→ Screens 09-A + 09-C — Completion &amp; Reopen</span>
+    </div>
+  </div>
+  <div class="risk-card risk-rejection">
+    <div class="risk-tag">Risk · Rejected Input</div>
+    <h4>When the System Cannot Comply</h4>
+    <p>When the guest asks for something the system operationally cannot do — cancel a request mid-delivery, reopen a closed ticket — the design choice is binary: hide the constraint or name it and redirect. Every rejection is either a trust failure or a trust signal. The difference is entirely in how the system communicates the "no."</p>
+    <div class="risk-logic">
+      <div><strong>Decision:</strong> Explain the "no," reveal what already happened, offer the next valid path</div>
+      <div><strong>Outcome:</strong> Rejection becomes redirection — the guest stays in-system</div>
+      <span class="risk-link">→ Screen 10-C — Cancellation Rejected (three states)</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- §05 removed from here — moved to position 02 -->
+
+<!-- ═══════ 06 STRATEGY ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">04 · Strategy</div>
+  <div>
+    <h2>Reframing the Problem</h2>
+    <div class="section-copy">
+      <p>The instinct is to build faster. Reduce the wait time. Optimize the queue. That would solve latency. It would not solve the problem.</p>
+      <p>The real constraint was not time — it was uncertainty. A guest who waits 20 minutes with a visible ETA feels more in control than one who waits 10 minutes in silence. The product needed to reduce perceived wait, not just actual wait.</p>
+    </div>
+  </div>
+</div>
+<div class="diagram-card stack">
+    <div class="decision-cell"><strong>01</strong>Status reaches the guest — the guest doesn't chase status. Every update is pushed, not pulled. The moment a guest still needs to call back after submitting a request, the system has already failed.</div>
+    <div class="decision-cell"><strong>02</strong>Because status is visible, every state needs a visible next step. "In progress" is not a status — it's a void. The guest needs to know what in progress means: who has it, where they are, when to expect them.</div>
+    <div class="decision-cell"><strong>03</strong>Because next steps are visible, constraints must be visible too. When capacity is high, the system doesn't say "processing." It says there is high demand, here is the estimated wait, here is what happens next. Operational truth over optimism.</div>
+    <div class="decision-cell"><strong>04</strong>Because constraints are named honestly, the front desk becomes the fallback — not the first resort. If a guest taps "Contact front desk" while their request is live and visible, that is a product failure. Not a service recovery moment.</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════ 07 DECISIONS ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">05 · Architectural Decisions</div>
+  <div>
+    <h2>The Decision Matrix</h2>
+    <div class="section-copy">
+      <p>Each row is not a feature. It is a decision. Every entry connects a specific operational friction to a system response — and maps that response to a strategic outcome. The goal was not to build a feature list. It was to remove the customer's need to follow up, one friction point at a time.</p>
+      <p style="margin-top:12px; padding:14px 18px; background:rgba(176,141,73,0.06); border-left:3px solid var(--gold); border-radius:0 var(--radius-sm) var(--radius-sm) 0; font-size:16px; color:#3e3831;">These decisions apply equally to any high-touch customer journey — hospitality, SaaS onboarding, or B2B implementation. The friction is the same. The system response is the same.</p>
+    </div>
+  </div>
+</div>
+<div class="table-card">
+  <table>
+    <thead>
+      <tr><th>Operational Friction</th><th>System Decision</th><th>Strategic Outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Opaque handoffs</td><td>Centralized request tracking</td><td>Shared state-truth across guest and staff</td></tr>
+      <tr><td>Guest anxiety during wait</td><td>Real-time ETA &amp; status timeline</td><td>Eliminates the need for manual desk follow-ups</td></tr>
+      <tr><td>Input paralysis at entry</td><td>Structured UI + inline fallback text</td><td>High-speed entry that absorbs categorization errors</td></tr>
+      <tr><td>Forgotten status updates</td><td>Task-tied state changes</td><td>Removes reliance on staff remembering to update</td></tr>
+      <tr><td>Hardware / download barriers</td><td>QR-based PWA framework</td><td>Zero-download access with immediate utility</td></tr>
+      <tr><td>Guest input the system cannot fulfill</td><td>Honest rejection + redirect</td><td>Trust maintained through transparency, not silence</td></tr>
+    </tbody>
+  </table>
+  <div class="mini-note" style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line);"><strong style="color:var(--ink); display:block; margin-bottom:8px; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;">Scope boundaries — what the system deliberately does not do</strong>
+  No native app — QR-based PWA removes the download barrier. Sacrificed: push notifications on iOS. Gained: zero-friction entry a guest will actually use. &nbsp;·&nbsp;
+  No full cancellation — once in progress, the system manages constraint honestly across three outcomes: confirmed, rejected, or abandoned. None apologizes. All explain. &nbsp;·&nbsp;
+  No full automation — staff-triggered transitions preserve human judgment at dispatch. GPS infrastructure is unreliable across properties; automation creates a different class of failure.
+  </div>
+</div>
+</section>
+
+<!-- ═══════ 08 SYSTEM ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">06 · System Behavior</div>
+  <div>
+    <h2>Synchronizing Frontstage and Backstage</h2>
+
+  </div>
+</div>
+<div class="phase-wrap">
+  <div class="phase-grid">
+    <div class="head"></div>
+    <div class="head">Phase 01 · Initiation</div>
+    <div class="head">Phase 02 · Processing</div>
+    <div class="head">Phase 03 · Dispatch</div>
+    <div class="head">Phase 04 · Resolution</div>
+    <div class="head exception-head">Phase 05 · Exception</div>
+    <div class="rowhead">Guest</div>
+    <div>Submits request via triage UI</div>
+    <div>Receives dynamic ETA anchor</div>
+    <div>Tracks live timeline updates</div>
+    <div>Confirms and rates resolution</div>
+    <div class="exception-cell">Attempts cancellation or reopen</div>
+    <div class="rowhead">System</div>
+    <div>Ticket generated &amp; timestamped</div>
+    <div>Category assigned via routing logic</div>
+    <div>State transitions triggered by staff action¹</div>
+    <div>Feedback captured for CSAT</div>
+    <div class="exception-cell">Checks operational state → routes to Pending, Confirmed, or Rejected</div>
+    <div class="rowhead">Staff</div>
+    <div>Assignment received in queue</div>
+    <div>Accepts and initiates task</div>
+    <div>Updates progress state in real time</div>
+    <div>Marks operational completion</div>
+    <div class="exception-cell">Confirms or rejects cancellation within 2 min</div>
+  </div>
+</div>
+<div class="mini-note">¹ State transitions are staff-triggered, not automated — GPS infrastructure is unreliable across properties, and removing human judgment from dispatch creates a different class of failure. &nbsp;·&nbsp; State fields per request: <code>request_id · category · assigned_to · current_status · eta_timestamp</code></div>
+</section>
+
+<!-- §08B Rejection Logic removed as standalone — content fused into Ch.6 interface below -->
+
+<!-- ═══════ 09 INTERFACE ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">07 · Interface</div>
+  <div>
+    <h2>Six Behaviors. Eighteen States. One System.</h2>
+    <div class="section-copy">
+      <p>Each group of screens is a behavior — not a feature set. The value of this interface is not in the ideal path. It is in how the system performs when things are not ideal. Each chapter names what the system is doing and why it matters operationally.</p>
+    </div>
+  </div>
+</div>
+<div class="stack">
+
+  <!-- Ch.1 ACCESS -->
+  <div>
+    <div class="screen-section-title" style="font-size:15px; color:var(--ink); letter-spacing:0.06em; margin-bottom:6px;">Ch.1 · Access</div>
+    <div class="screen-section-quote" style="margin-top:0;">"Entry without mediation. Error states named before they become escalations."</div>
+    <div class="screen-grid two-up">
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">01</div><div class="screen-name">Access — Default</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 01" class="screen-shot" loading="lazy" src="aethel_assets/01_access_default.png"/></div>
+        <p>QR-based entry removes staff mediation entirely. The guest enters the system before asking for permission.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">02</div><div class="screen-name">Access — Error State</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 02" class="screen-shot" loading="lazy" src="aethel_assets/02_access_error.png"/></div>
+        <p>"We couldn't find your reservation" is specific. "Something went wrong" is not. The error names the problem so the guest knows whether to retry or call the desk.</p>
+      </article>
+    </div>
+    <div class="mini-note" style="margin-top:16px;"><strong style="color:var(--ink);">Takeaway:</strong> The guest enters the system before the hotel knows they need help. Failure states are specific enough to resolve without front desk contact.</div>
+  </div>
+
+  <!-- Ch.2 REQUEST FORMATION -->
+  <div>
+    <div class="screen-section-title" style="font-size:15px; color:var(--ink); letter-spacing:0.06em; margin-bottom:6px;">Ch.2 · Request Formation</div>
+    <div class="screen-section-quote" style="margin-top:0;">"Ambiguity absorbed at intake. Expectation set before the clock starts."</div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">03</div><div class="screen-name">New Request — Triage</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 03" class="screen-shot" loading="lazy" src="aethel_assets/03_new_request_triage.png"/></div>
+        <p>Three categories cover ~90% of requests. The free-text fallback is a deliberate routing mechanism — ambiguous requests are better captured in the guest's words than misrouted by forced categorization.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">04</div><div class="screen-name">Specify Request</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 04" class="screen-shot" loading="lazy" src="aethel_assets/04_specify_request.png"/></div>
+        <p>"Something else" is not a failure state — it's an honest option. Absorbing ambiguity here costs nothing. Misrouting costs minutes and a follow-up.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">05</div><div class="screen-name">Confirm Request</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 05" class="screen-shot" loading="lazy" src="aethel_assets/05_confirm_request.png"/></div>
+        <p>The ETA appears before submission — not after. A guest who sees "10–15 minutes" before confirming has calibrated their expectation before the clock starts.</p>
+      </article>
+    </div>
+    <div class="mini-note" style="margin-top:16px;"><strong style="color:var(--ink);">Takeaway:</strong> Misrouting costs minutes and a follow-up. Absorbing ambiguity at intake costs nothing. The ETA before submission means expectation is calibrated before the guest starts measuring.</div>
+  </div>
+
+  <!-- Ch.3 LIVE VISIBILITY -->
+  <div>
+    <div class="screen-section-title" style="font-size:15px; color:var(--ink); letter-spacing:0.06em; margin-bottom:6px;">Ch.3 · Live Visibility</div>
+    <div class="screen-section-quote" style="margin-top:0;">"Progress visible = follow-up unnecessary. Constraint named = trust maintained."</div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">06</div><div class="screen-name">Active Tracking</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 06" class="screen-shot" loading="lazy" src="aethel_assets/06_active_tracking.png"/></div>
+        <p>The live timeline shows the guest that the system is tracking — not displaying a frozen screen while the request disappears. "Contact front desk" is always visible, but unmistakably the fallback.</p>
+        <div class="logic"><div><strong>Decision:</strong> Visible progress states</div><div><strong>Outcome:</strong> Fewer status calls to the front desk</div></div>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">06-R</div><div class="screen-name">Tracking — Reopened</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 06-R" class="screen-shot" loading="lazy" src="aethel_assets/06_reopen_tracking.png"/></div>
+        <p><strong>Decision:</strong> Reuse Screen 06 with a context banner — the guest isn't starting over. <strong>Prevents:</strong> disorientation after a reopen. The timeline preserves every prior event.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">07</div><div class="screen-name">High Demand</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 07" class="screen-shot" loading="lazy" src="aethel_assets/07_high_demand.png"/></div>
+        <p>The system names the constraint clearly — approximate wait, reason, and commitment to update. Honest disappointment outperforms false reassurance every time.</p>
+        <div class="logic"><div><strong>Decision:</strong> Expose capacity constraint explicitly</div><div><strong>Outcome:</strong> Reduced false expectations → fewer escalations</div></div>
+      </article>
+    </div>
+    <div class="mini-note" style="margin-top:16px;"><strong style="color:var(--ink);">Takeaway:</strong> These three screens — tracking, reopen, high demand — cover the most common reasons a guest picks up the phone. When the system is visible, the phone stays down.</div>
+  </div>
+
+  <!-- Ch.4 CANCELLATION UNDER CONSTRAINT -->
+  <div>
+    <div class="screen-section-title" style="font-size:15px; color:var(--ink); letter-spacing:0.06em; margin-bottom:6px;">Ch.4 · Cancellation Under Constraint</div>
+    <div class="screen-section-quote" style="margin-top:0;">"The system doesn't pretend control it doesn't have."</div>
+    <div class="screen-grid two-up">
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">07-C</div><div class="screen-name">Early Cancel — Pre-Dispatch</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 07-C" class="screen-shot" loading="lazy" src="aethel_assets/07c_early_cancel.png"/></div>
+        <p>Before any team member is assigned, cancellation is immediate. The modal reflects this honestly — no "we'll check with the team" theater when there's no team to check with.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">08</div><div class="screen-name">Cancel Modal — In Progress</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 08" class="screen-shot" loading="lazy" src="aethel_assets/08_cancel_modal.png"/></div>
+        <p>"We'll check with the assigned team" is not a limitation disguised as a feature. It's an honest communication of operational constraint — the system explains why instead of pretending the guest has control they don't.</p>
+      </article>
+    </div>
+    <div class="mini-note" style="margin-top:16px;"><strong style="color:var(--ink);">Takeaway:</strong> Pre-dispatch and in-progress cancellations are operationally different situations. The system communicates that difference honestly — no theater, no fake control.</div>
+  </div>
+
+  <!-- Ch.5 RESOLUTION INTEGRITY -->
+  <div>
+    <div class="screen-section-title" style="font-size:15px; color:var(--ink); letter-spacing:0.06em; margin-bottom:6px;">Ch.5 · Resolution Integrity</div>
+    <div class="screen-section-quote" style="margin-top:0;">"Completion only exists when the guest confirms it."</div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">09-A</div><div class="screen-name">Completion Confirmation</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 09-A" class="screen-shot" loading="lazy" src="aethel_assets/09_completion_confirmation.png"/></div>
+        <p>Completion requires guest confirmation — not just a staff tap. "Yes, it's resolved" closes the loop cleanly. "Something's still missing" surfaces the gap before it becomes a lobby escalation.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">09-B</div><div class="screen-name">Resolved &amp; Rated</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 09-B" class="screen-shot" loading="lazy" src="aethel_assets/09_resolved_rated.png"/></div>
+        <p><strong>Decision:</strong> Full timeline visible after completion. Transparency after delivery builds the same trust as transparency during it.</p>
+      </article>
+      <article class="screen-card">
+        <div class="screen-top"><div class="screen-id">09-C</div><div class="screen-name">Reopen Request</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 09-C" class="screen-shot" loading="lazy" src="aethel_assets/09_reopen.png"/></div>
+        <p>One tap surfaces the gap. "Contact front desk directly" is the last option — the system has one more chance to contain the escalation before it becomes a public lobby moment.</p>
+      </article>
+    </div>
+    <div class="mini-note" style="margin-top:16px;"><strong style="color:var(--ink);">Takeaway:</strong> A request marked complete by staff is not the same as a request resolved for the guest. The system holds that distinction — and gives the guest one more path before the escalation reaches the lobby.</div>
+  </div>
+
+  <!-- Ch.6 REJECTION AS REDIRECTION -->
+  <div>
+    <div class="screen-section-title" style="font-size:15px; color:var(--ink); letter-spacing:0.06em; margin-bottom:6px;">Ch.6 · Rejection as Redirection</div>
+    <div class="screen-section-quote" style="margin-top:0;">"When the system cannot comply, it does not disappear. It explains, redirects, and preserves trust."</div>
+    <div class="rejection-contrast" style="margin-bottom:24px;">
+      <div class="rejection-col typical">
+        <div class="rejection-col-label">Typical system behavior</div>
+        <div class="rejection-step"><span class="step-num">01</span>Generic error with no context</div>
+        <div class="rejection-step"><span class="step-num">02</span>What was attempted is not acknowledged</div>
+        <div class="rejection-step"><span class="step-num">03</span>No next step offered</div>
+        <div class="rejection-step"><span class="step-num">04</span>Guest exits to front desk — trust lost</div>
+      </div>
+      <div class="rejection-col aethel">
+        <div class="rejection-col-label">The Aethel</div>
+        <div class="rejection-step"><span class="step-num">01</span>Explain the outcome directly and calmly</div>
+        <div class="rejection-step"><span class="step-num">02</span>Reveal what already happened</div>
+        <div class="rejection-step"><span class="step-num">03</span>Offer the next valid path</div>
+        <div class="rejection-step"><span class="step-num">04</span>Guest stays in-system — trust preserved</div>
+      </div>
+    </div>
+    <div class="decision-callout" style="margin-bottom:28px;">
+      <div class="decision-callout-label">Two deliberate decisions</div>
+      <p>The rejection icon is gold — not red. Red signals failure. Gold signals a timing collision with an outcome that is actually okay. The cancellation attempt appears in the final timeline because the system tracks reality, not just the happy path.</p>
+    </div>
+    <div class="screen-section-quote" style="margin-top:0;">"When cancellation succeeds, the system closes the loop — no drama, no apology."</div>
+    <div class="screen-grid two-up" style="margin-bottom:40px;">
+      <article class="screen-card sequence-card">
+        <div class="screen-step">Branch A · Confirmed</div>
+        <div class="screen-top"><div class="screen-id">10-B</div><div class="screen-name">Request Cancelled</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 10-B" class="screen-shot" loading="lazy" src="aethel_assets/10b_request_cancelled.png"/></div>
+        <p><strong>Decision:</strong> Grey icon — not red, not teal. Closed state, not failed state. <strong>Prevents:</strong> emotional dramatization of a guest-initiated action. Copy follows the same logic: factual, not apologetic.</p>
+      </article>
+    </div>
+    <div class="screen-section-quote">"When the system cannot comply, it does not disappear. It explains, redirects, and stays visible."</div>
+    <div class="screen-grid four-flow">
+      <article class="screen-card sequence-card">
+        <div class="screen-step">Step 1</div>
+        <div class="screen-top"><div class="screen-id">10-A</div><div class="screen-name">Cancellation Pending</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 10-A" class="screen-shot" loading="lazy" src="aethel_assets/10a_cancellation_pending.png"/></div>
+        <p><strong>Decision:</strong> Active waiting state, not silence. <strong>Prevents:</strong> the guest assuming the system lost their request. 2-minute window with one escape: go back.</p>
+      </article>
+      <article class="screen-card sequence-card">
+        <div class="screen-step">Step 2 · Branch B</div>
+        <div class="screen-top"><div class="screen-id">10-C·A</div><div class="screen-name">Cancellation Rejected</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 10-B" class="screen-shot" loading="lazy" src="aethel_assets/10_reveal.png"/></div>
+        <p><strong>Decision:</strong> Lead with resolution, not rejection. Gold icon — timing collision, not failure. <strong>Prevents:</strong> the guest interpreting a fulfilled request as a system error.</p>
+      </article>
+      <article class="screen-card sequence-card">
+        <div class="screen-step">Step 3</div>
+        <div class="screen-top"><div class="screen-id">10-C1</div><div class="screen-name">Still Not Right</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 10-C1" class="screen-shot" loading="lazy" src="aethel_assets/10_still_not_right.png"/></div>
+        <p>If something was actually wrong with the delivery, the system doesn't close the loop — it asks "What wasn't right?" and opens a new request immediately. The rejection becomes an intake.</p>
+      </article>
+      <article class="screen-card sequence-card">
+        <div class="screen-step">Step 4</div>
+        <div class="screen-top"><div class="screen-id">10-C2</div><div class="screen-name">Closed with Full Context</div></div>
+        <div class="screen-slot has-image"><img alt="Screen 10-C2" class="screen-shot" loading="lazy" src="aethel_assets/10_closed_full_context.png"/></div>
+        <p>The timeline includes the cancellation attempt — shown in gold italic as a contextual event, not an error. The system tracked what actually happened, including the moment the guest tried to exit.</p>
+      </article>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════ 10 IMPACT ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">08 · Business &amp; Experience Impact</div>
+  <div>
+    <h2>Shifting the System</h2>
+    <div class="section-copy">
+      <p>The system was designed to intercept the conditions that produce repetition — not by speeding up execution, but by making state visible before the guest needs to ask.</p>
+    </div>
+  </div>
+</div>
+<div class="diagram-card" style="margin-bottom:22px;">
+  <p style="margin:0 0 12px;font-size:17px;font-weight:600;">13,644 support tickets. One property. Several weeks.</p>
+  <p style="margin:0;color:#3a342e;font-size:15px;line-height:1.7;">Filtered to a single issue type, the log returned dozens of repeated entries across consecutive days, for the same rooms, from different guests. Each repeat entry represents a guest who contacted the front desk a second time. Or a third.<br><br>A status call takes roughly 3 minutes: the guest explains, the agent checks, someone radios the team, a response comes back. At a property handling 80 requests per shift, even a 15% callback rate means nearly two full hours of front desk capacity spent on information the system already had — and never surfaced.<br><br>That capacity isn't recovered through faster service. It's recovered through visible service. The problem was never that the operation was slow. The problem was that it was invisible.<br><br>In a SaaS environment, the same pattern surfaces as elevated support tickets during onboarding, extended time-to-value, and — if unaddressed — a churn signal that looks like disengagement but is actually confusion. The customer didn't leave because the product failed. They left because the system stopped telling them what was happening.</p>
+</div>
+<div class="table-card">
+  <table>
+    <thead><tr><th>Metric</th><th>Target</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>Reduction in secondary status calls</td><td>40%</td><td>Grounded in hospitality research showing 30–50% call reduction when guests have real-time request visibility. Mid-range target for V1.</td></tr>
+      <tr><td>Tickets triggering automated state updates</td><td>80%</td><td>Accounts for partial staff adoption and legacy workflow habits. Ambitious but achievable without full operational change management.</td></tr>
+      <tr><td>Abandonment to "Contact front desk" during active tracking</td><td>&lt;15%</td><td>Each point below this represents a guest who trusted the system over the phone.</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ═══════ 11 REFLECTION ═══════ -->
+<section class="section">
+<div class="section-header">
+  <div class="section-number">09 · Reflection</div>
+  <div>
+    <h2>What I Would Test Next</h2>
+    <div class="section-copy">
+      <p>V1 proves the hypothesis: legibility reduces friction. What it does not yet answer is how the system performs when it is right about the process but wrong about the timing — and what happens when the staff side of the loop fails silently.</p>
+    </div>
+  </div>
+</div>
+<div class="three-col">
+  <div class="decision-cell"><strong>Test 01</strong>Does proactive delay notification preserve trust better than silent ETA drift? A guest who sees "Arriving in 8 minutes" and waits 20 may experience worse damage than one who never saw the ETA.</div>
+  <div class="decision-cell"><strong>Test 02</strong>How does the system detect when staff-side state transitions fail? If a team member marks a request done without triggering the workflow, the guest sees "completed" while the issue persists.</div>
+  <div class="decision-cell"><strong>Test 03</strong>Is a 2-minute cancellation response window experienced as honest or slow? The system commits to this — but it's a design assumption, not a measured baseline.</div>
+</div>
+<div class="pull-quote">"V1 makes the system legible. V2 needs to make it trustworthy when it's wrong — and honest about when it can't be."</div>
+</section>
+
+<!-- ═══════ CLOSING — CS BRIDGE ═══════ -->
+<section class="section" style="border-bottom:none;">
+<div class="section-header">
+  <div class="section-number">What I'd bring</div>
+  <div>
+    <h2>If you hire me for CS or Onboarding.</h2>
+  </div>
+</div>
+<div class="lobby-block">
+  <p>I would map every point in the customer journey where the system stops communicating and the customer starts guessing. That gap — not the product, not the team — is where churn begins. It's where onboarding stalls. It's where a renewal conversation starts from a deficit instead of a baseline.</p>
+  <p>I've spent eight years watching it happen in real time, and I have the ticket logs to prove what it costs. A 15% callback rate at 80 requests per shift is two hours of capacity burned daily on information the system already had. In SaaS, the same math shows up as support volume, implementation delays, and time-to-value drag — all traceable to the same root cause: the customer stopped receiving signal and started filling the gap themselves.</p>
+  <p><strong>I know what this looks like before it becomes a retention problem.</strong> I know how to name it, quantify it, and build around it. That's what I'd bring on day one.</p>
+</div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="footer">
+<div>
+  <div class="footer-quote">This case study is a product. Developed in code, versioned on GitHub, published via Vercel. The medium follows the same standard as the system it documents.</div>
+</div>
+<div class="footer-meta">
+  <div><strong>José Pelissari</strong> · New York, NY</div>
+  <div style="margin-top:4px;">"Eight years inside the operation. Now building the systems that fix it."</div>
+  <div style="margin-top:10px;">
+    <a href="mailto:josepelissari@jppelissari.com">josepelissari@jppelissari.com</a> ·
+    <a href="https://jppelissari.com" target="_blank">jppelissari.com</a> ·
+    <a href="https://www.linkedin.com/in/jppelissari/" target="_blank">LinkedIn</a>
+  </div>
+</div>
+</footer>
+
+</main>
+</body>
+</html>
